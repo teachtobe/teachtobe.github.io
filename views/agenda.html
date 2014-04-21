@@ -1,0 +1,60 @@
+<div class="center" ng-controller="AgendaCtrl">
+	<div class="calm">
+		<h1>Agenda</h1>
+		<div class="well">
+			<form class="form-horizontal agenda" role="form">
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Search</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" placeholder="Search" ng-model="temp.songFilter">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Hymns</label>
+					<div class="col-sm-8">
+						<select id="openingSong" class="form-control" ng-model="temp.presentation.song">
+							<option ng-repeat="song in data.hymns | filter:temp.songFilter" 
+								value="{{song.detailColumn-1}}">{{song.songNumber}} : {{song.name}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-4 col-sm-8">
+						<a class="btn btn-block" ng-show="!tools.music.playing || tools.music.playing.paused" ng-click="tools.music.play(temp.presentation.song)">Play Hymn</a>
+						<a class="btn btn-block" ng-show="tools.music.playing && !tools.music.playing.paused" ng-click="tools.music.pause()">Stop Hymn</a>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Chorister</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" ng-model="temp.presentation.chorister">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Pianist</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" ng-model="temp.presentation.pianist">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Opening Prayer</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" ng-model="temp.presentation.openingPrayer">
+					</div>
+				</div>
+
+				<hr>
+
+
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Closing Prayer</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" ng-model="temp.presentation.closingPrayer">
+					</div>
+				</div>
+			</form>
+		</div>
+		<h2>Live It</h2>
+	</div>
+</div>

@@ -1,0 +1,12 @@
+<div class="notes well" ng-show="show">
+	<div class="note" ng-repeat="note in notes | filter:{category:category,topic:topic}">
+		<button type="button" class="close" ng-click="tools.remove(note)">&times;</button>
+		<p>{{note.thoughts}}</p>
+	</div>
+	<form role="form" class="clearfix" ng-submit="tools.add(temp.note)">
+		<div class="form-group">
+			<textarea class="form-control" rows="3" placeholder="Notes" ng-model="temp.note.thoughts"></textarea>
+		</div>
+		<button type="submit" class="btn btn-info pull-right">Add Note</button>
+	</form>
+</div>

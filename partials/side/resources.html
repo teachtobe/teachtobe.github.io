@@ -1,0 +1,20 @@
+<div class="content resources" ng-controller="ResourceCtrl">
+	<h1>
+		<a href="#/resourceList" title="Go to Resources">
+			<span>Resources</span> 
+		</a>
+	</h1>
+	<ul>
+		<li class="parent" ng-repeat="category in data.categories">
+			<span class="category">{{category}}s</span>
+			<ul class="child">
+				<li ng-repeat="resource in data.organized[category]">
+					<a ng-click="tools.resource.focus(resource)" 
+						class="{{tools.resource.isActive(resource)}}"
+						title="{{resource.refrence}}">{{resource.title}}</a>
+				</li>
+				<li ng-show="mode=='edit'"><a ng-click="tools.resource.add(category)" class="add">Add Resource</a></li>
+			</ul>
+		</li>
+	</ul>
+</div>

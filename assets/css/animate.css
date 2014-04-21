@@ -1,0 +1,36 @@
+/*.view{
+	-webkit-transition:.7s linear all;
+	transition:.7s linear all;
+	width: 100%;
+	overflow: hidden;
+}*/
+
+/*.view.ng-enter{
+	margin-top: 0px;
+}
+.view.ng-enter.ng-enter-active{
+	margin-top:100%;
+}
+
+.view.ng-leave{
+	margin-top: 0px;
+}
+.view.ng-leave-active{
+	margin-top:-2000px;
+}
+*/
+
+.view.ng-enter{
+	margin-top: 0px;
+}
+.view.ng-enter.ng-enter-active{
+	margin-top:100%;
+}
+
+.view.ng-leave{
+	margin-top: 0px;
+}
+.view.ng-leave-active{
+	margin-top:-100%;
+}
+

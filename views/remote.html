@@ -1,0 +1,34 @@
+<div ng-controller="RemoteCtrl">
+	<h1>{{data.presentation.location}}</h1>
+	<div class="cards">
+		<div class="card">
+			<h1>Navigation</h1>
+			<ul class="list">
+				<li>
+					<a ng-click="tools.control('welcome')">Welcome</a>
+					<a ng-click="tools.control('agenda')">Agenda</a>
+					<a ng-click="tools.control('introduction')">Intro</a>
+					<a ng-click="tools.control('topicList')">Principles</a>
+					<a ng-click="tools.control('resourceList')">Resources</a>
+				</li>
+			</ul>
+		</div>
+		<div class="card">
+			<h1>Principles</h1>
+			<ul class="list">
+				<li ng-repeat="principle in data.topics">
+					<a ng-click="tools.control('topic/'+principle.objectId)">{{principle.title}}</a>
+				</li>
+			</ul>
+		</div>
+		<div class="card" ng-repeat="category in data.categories">
+			<h1>{{category}}s</h1>
+				<ul class="list">
+				<li ng-repeat="resource in data.organized[category]">
+					<a ng-click="tools.preview(resource)" 
+						title="{{resource.refrence}}">{{resource.title}}</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,8 @@
+<div id="topicList" class="titlentext" ng-controller="TopicCtrl">
+	<div>
+		<h2>Principles of the Learning Model</h2>
+		<ul class="list">
+			<li class="tagline" ng-repeat="topic in data.topics"><a href="#/topic/{{topic.objectId}}">{{$index+1}}. {{topic.tagline}}</a></li>
+		</ul>
+	</div>
+</div>

@@ -1,0 +1,24 @@
+<div class="cards">
+	<div class="card">
+		<h2>Setup</h2>
+		<ul class="list">
+			<li><a href="#/welcome">Welcome</a></li>
+			<li><a href="#/agenda">Agenda</a></li>
+			<li><a href="#/introduction">Introduction</a></li>
+		</ul>
+	</div>
+	<div class="card">
+		<h2>Principles</h2>
+		<ul class="list">
+			<li ng-repeat="topic in data.topics"><a href="#/topic/{{topic.objectId}}">{{topic.title}}</a></li>
+		</ul>
+	</div>
+	<div class="card">
+		<h2>Other</h2>
+		<ul class="list">
+			<li><a href="#/resourceList">Resources</a></li>
+			<li><a href="#/recomendation">Recomendation</a></li>
+			<li><a href="#/review">Review</a></li>
+		</ul>
+	</div>
+</div>

@@ -1,0 +1,21 @@
+{
+	"SITE":{
+		"TITLE":"Inspired Learning & Teaching",
+		"NAV":{
+			"HOME":		"Home",
+			"REMOTE":	"Remote",
+			"PRESENT":	"Present",
+			"STUDY":	"Study",
+			"EDIT":		"Edit",
+			"TOPIC":	"Principles",
+			"RESOURCE": "Resources",
+			"HELP":		"Site Tutorials",
+			"ACCOUNT":	"Account",
+			"ADMIN": 	"Admin Dashboard"
+		},
+		"LOGIN":"Login",
+		"LOGOUT":	"logout",
+		"SIGNUP":"Signup",
+		"COPYRIGHT":"2014 Creative Design"
+	}
+}
