@@ -499,7 +499,7 @@ a, [ng-click]{
 		font-size: 16px;
 		position: relative;
 		padding-right: 52px;
-		width: 32%;
+		width: 32.9%;
 		text-align: center;
 	}
 	#overview .steps li:hover {
@@ -514,7 +514,10 @@ a, [ng-click]{
 			position: absolute;
 			right: 0px;
 			top: 0px;
-			background-image: url('assets/img/arrow.png');
+			background-image: url('../img/arrow.png');
+		}
+		#overview .steps li:last-child:before{
+			width: 0px;
 		}
 		#overview .steps li:after {
 			content: "";
@@ -524,7 +527,7 @@ a, [ng-click]{
 			position: absolute;
 			left: 33%;
 			top: 100%;
-			background-image: url('assets/img/uparrow.png');
+			background-image: url('../img/uparrow.png');
 		}
 		#overview .steps li:hover:after {
 			background: #82A9D4;
