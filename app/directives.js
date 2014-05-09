@@ -179,8 +179,8 @@ app.directive('autofit', ['dataService', function(dataService) {
 	return {
 		restrict: 		'C',
 		link: function(scope, elem, attrs, ctrl) {
-			var textSpan = $(elem).children('h2');
-			var textDiv = $(elem);
+			var textSpan = elem.children('h2');
+			var textDiv = elem;
 
 			textSpan.style.fontSize = 50;
 			while(textSpan.offsetHeight > textDiv.offsetHeight){
