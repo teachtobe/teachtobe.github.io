@@ -429,6 +429,12 @@ a, [ng-click]{
 #resourceViewModal .modal-dialog{
 	/*width: 1240px;*/
 }
+.autofit{
+	height: 400px;
+	overflow: hidden;
+}.autofit h2{
+	color: #FFF;
+}
 .modal-dialog * {
 	color: #000;
 }

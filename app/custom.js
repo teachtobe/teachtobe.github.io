@@ -50,6 +50,37 @@ var lib = {
 
 
 
+
+
+
+function autofit(elem){
+	var textSpan = $(elem).children('h2')[0];
+	var textDiv = elem;
+
+	console.log(textSpan,textDiv)
+	it.textSpan = textSpan
+	it.textDiv = textDiv
+
+	var origSize = 50;
+	$(textSpan).css('font-size', origSize+'px');
+
+	console.log(textSpan.offsetHeight,textDiv.offsetHeight)
+	while(textSpan.offsetHeight > (textDiv.offsetHeight-75)){
+		var size = Number(window.getComputedStyle(textSpan, null).getPropertyValue('font-size').split('px')[0]);
+		console.log('setting font-size: '+size)
+		var newSize = parseInt(size) - 2;
+		$(textSpan).css('font-size', newSize+'px');
+	}
+	$(textSpan).css('color', '#000');
+}
+
+
+
+
+
+
+
+
 Array.prototype.random = function () {
 	return this[Math.floor(Math.random() * this.length)]
 }

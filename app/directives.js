@@ -173,21 +173,3 @@ app.directive('notes', ['dataService', function(dataService) {
 		}
 	};
 }]);
-
-
-app.directive('autofit', ['dataService', function(dataService) {
-	return {
-		restrict: 		'C',
-		link: function(scope, elem, attrs, ctrl) {
-			console.log(elem)
-			it.afelem = elem;
-			var textSpan = elem.children('h2')[0];
-			var textDiv = elem[0];
-
-			textSpan.style.fontSize = 50;
-			while(textSpan.offsetHeight > textDiv.offsetHeight){
-				textSpan.style.fontSize = parseInt(textSpan.style.fontSize) - 2;
-			}
-		}
-	};
-}]);

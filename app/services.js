@@ -508,7 +508,7 @@ app.factory('dataService', function ($rootScope, $http, $q, config) {
 
 
 
-app.factory('resourceService', function ($rootScope, $q, dataService) {
+app.factory('resourceService', function ($rootScope, $q, $timeout, dataService) {
 	var tools = {
 		isActive:function(resource){
 			if(resource.topics.indexOf($rootScope.id) != -1)
@@ -538,6 +538,14 @@ app.factory('resourceService', function ($rootScope, $q, dataService) {
 				}).modal('show');
 				if(resource.category=='Video')
 					$('#videoPlayer').html('<iframe width="560" height="315" src="'+resource.refrence+'" frameborder="0"></iframe>')
+				else if(resource.category=='Quote')
+					$timeout(function(){
+						autofit($('.autofit')[1])
+					}, 1000);
+				// else(resource.category=='Scripture')
+				// 	$timeout(function(){
+				// 		autofit($('.autofit')[0])
+				// 	}, 1000);
 			}
 		},
 		add:function(category){
