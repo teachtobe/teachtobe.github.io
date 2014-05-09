@@ -1,12 +1,3 @@
-app.directive('myAdSense', function() {
-  return {
-    restrict: 'A',
-    transclude: true,
-    replace: true,
-    template: '<div ng-transclude></div>',
-    link: function ($scope, element, attrs) {}
-  }
-})
 app.directive('contenteditable', function() {
 	return {
 		require: 'ngModel',
@@ -179,6 +170,22 @@ app.directive('notes', ['dataService', function(dataService) {
 				}
 			}
 			scope.tools.fromParse();
+		}
+	};
+}]);
+
+
+app.directive('autofit', ['dataService', function(dataService) {
+	return {
+		restrict: 		'C',
+		link: function(scope, elem, attrs, ctrl) {
+			var textSpan = $(elem).children('h2');
+			var textDiv = $(elem);
+
+			textSpan.style.fontSize = 50;
+			while(textSpan.offsetHeight > textDiv.offsetHeight){
+				textSpan.style.fontSize = parseInt(textSpan.style.fontSize) - 2;
+			}
 		}
 	};
 }]);
