@@ -495,7 +495,7 @@ a, [ng-click]{
 	#overview .steps li {
 		display: inline-block;
 		background: #103C6E;
-		padding: 15px;
+		/* padding: 15px; */
 		font-size: 16px;
 		position: relative;
 		padding-right: 52px;
@@ -519,6 +519,9 @@ a, [ng-click]{
 		#overview .steps li:last-child:before{
 			width: 0px;
 		}
+		#overview .steps li:hover:before {
+			width: 0px;
+		}
 		#overview .steps li:after {
 			content: "";
 			width: 50px;
@@ -532,6 +535,17 @@ a, [ng-click]{
 		#overview .steps li:hover:after {
 			background: #82A9D4;
 		}
+		.steps li span {
+			margin-right: 5px;
+			padding-right: 5px;
+			border-right: 1px solid #FFF;
+			display: inline-block;
+			height: 30px;
+			margin: 11px;
+			line-height: 30px;
+			border-top-right-radius: 50px;
+			border-bottom-right-radius: 50px;
+		}
 #overview .principles {
 	padding: 20px;
 	background: #326BA9;
@@ -544,7 +558,7 @@ a, [ng-click]{
 		background: #82A9D4;
 	}
 	#overview .principles li {
-		margin-bottom: 15px;
+		margin-bottom: 20px;
 	}
 
 
