@@ -6,14 +6,12 @@
 				<h4 class="modal-title">{{temp.resource.title}}</h4>
 			</div>
 
-			<div class="modal-body autofit" id="scripturePlayer" ng-show="temp.resource.category=='Scripture'">
-				<h2>{{temp.resource.body}}</h2>
-				<p class="pull-right">{{temp.resource.refrence}}</p>
+			<div class="modal-body" id="scripturePlayer" ng-show="temp.resource.category=='Scripture'">
+				<h2 class="scripture">{{temp.resource.body}}</h2>
 			</div>
 
 			<div class="modal-body autofit" id="quotePlayer" ng-show="temp.resource.category=='Quote'">
-				<h2>&quot;{{temp.resource.body}}&quot;</h2>
-				<p class="pull-right">~{{temp.resource.refrence}}</p>
+				<h2 class="quote">&quot;{{temp.resource.body}}&quot;</h2>
 			</div>
 
 			<div class="modal-body" id="videoPlayer" ng-show="temp.resource.category=='Video'">
@@ -21,6 +19,9 @@
 			</div>
 
 			<div class="modal-footer">
+				<div>
+					<p class="pull-right">~{{temp.resource.refrence}}</p>
+				</div>
 				<div ng-show="view=='remote'">
 					<button type="button" class="btn btn-info" ng-click="tools.resource.send(temp.resource)">Send To Projector</button>
 					<button type="button" class="btn btn-success pull-right" data-dismiss="modal">Close</button>

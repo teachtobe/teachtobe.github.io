@@ -538,10 +538,12 @@ app.factory('resourceService', function ($rootScope, $q, $timeout, dataService) 
 				}).modal('show');
 				if(resource.category=='Video')
 					$('#videoPlayer').html('<iframe width="560" height="315" src="'+resource.refrence+'" frameborder="0"></iframe>')
-				else if(resource.category=='Quote')
+				else if(resource.category=='Quote'){
+					$($($('.autofit')[0]).children('h2')[0]).css('color', '#FFF');
 					$timeout(function(){
-						autofit($('.autofit')[1])
-					}, 1000);
+						autofit($('.autofit')[0])
+					}, 500);
+				}
 				// else(resource.category=='Scripture')
 				// 	$timeout(function(){
 				// 		autofit($('.autofit')[0])

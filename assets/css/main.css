@@ -1,3 +1,4 @@
+@import url(http://fonts.googleapis.com/css?family=Cabin);
 @font-face {
 	font-family: 'League Gothic';
 	src: url("../fonts/league_gothic-webfont.eot");
@@ -434,6 +435,9 @@ a, [ng-click]{
 	overflow: hidden;
 }.autofit h2{
 	color: #FFF;
+}
+.quote, .scripture{
+	font-family: 'Cabin', sans-serif;
 }
 .modal-dialog * {
 	color: #000;

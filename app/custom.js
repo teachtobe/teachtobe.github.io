@@ -65,7 +65,7 @@ function autofit(elem){
 	$(textSpan).css('font-size', origSize+'px');
 
 	console.log(textSpan.offsetHeight,textDiv.offsetHeight)
-	while(textSpan.offsetHeight > (textDiv.offsetHeight-75)){
+	while(textSpan.offsetHeight > (textDiv.offsetHeight-40)){
 		var size = Number(window.getComputedStyle(textSpan, null).getPropertyValue('font-size').split('px')[0]);
 		console.log('setting font-size: '+size)
 		var newSize = parseInt(size) - 2;

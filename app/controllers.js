@@ -10,7 +10,7 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $http, $r
 			resources:[],
 			organized: {},
 			categories:['Scripture','Quote','Video'],
-			clickPath: ['welcome','agenda','introduction','topicList','topic','resourceList','recomendation','review']
+			clickPath: ['welcome','agenda','introduction','topicList','topic','resourceList','overview','recomendation','review']
 		};
 		$http({method: 'GET', url: 'assets/json/hymns.json'}).success(function(data) {
 			$rootScope.data.hymns=data.playlist.list;
