@@ -16,6 +16,9 @@
 		"LOGIN":"Login",
 		"LOGOUT":	"logout",
 		"SIGNUP":"Signup",
-		"COPYRIGHT":"2014 Creative Design"
+		"COPYRIGHT":"2014 Creative Design",
+		"TOPIC":{
+			"LEARNERS_AND_TEACHERS": "Learners &amp; Teachers at BYU Idaho:"
+		}
 	}
 }

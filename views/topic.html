@@ -1,6 +1,6 @@
 <div class="titlentext" ng-controller="TopicCtrl" ng-init="tools.setTopic()">
 	<div ng-hide="mode=='edit'">
-		<h2>Learners &amp; Teachers:</h2>
+		<h2>{{'SITE.TOPIC.LEARNERS_AND_TEACHERS' | translate}}</h2>
 		<h1 ng-hide="topic.tagline">{{topic.i}}. {{topic.title}}</h1>
 		<h1 ng-show="topic.tagline">{{topic.i}}. {{topic.tagline}}</h1>
 		<div class="well">
