@@ -1,1 +1,11 @@
-<h1>Overview</h1>
+<div id="overview" class="centered" ng-controller="TopicCtrl">
+	<h1>BYU - Idaho Learning Model</h1>
+	<ol class="steps">
+		<li><a>1 | Prepare</a></li>
+		<li><a>2 | Teach One Another</a></li>
+		<li><a>3 | Ponder/Prove</a></li>
+	</ol>
+	<ol class="principles">
+		<li ng-repeat="topic in data.topics">{{topic.tagline}}</li>
+	</ol>
+</div>
