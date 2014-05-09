@@ -179,13 +179,15 @@ app.directive('autofit', ['dataService', function(dataService) {
 	return {
 		restrict: 		'C',
 		link: function(scope, elem, attrs, ctrl) {
-			var textSpan = elem.children('h2');
-			var textDiv = elem;
+			console.log(elem)
+			it.afelem = elem;
+			// var textSpan = elem.children('h2');
+			// var textDiv = elem;
 
-			textSpan.style.fontSize = 50;
-			while(textSpan.offsetHeight > textDiv.offsetHeight){
-				textSpan.style.fontSize = parseInt(textSpan.style.fontSize) - 2;
-			}
+			// textSpan.style.fontSize = 50;
+			// while(textSpan.offsetHeight > textDiv.offsetHeight){
+			// 	textSpan.style.fontSize = parseInt(textSpan.style.fontSize) - 2;
+			// }
 		}
 	};
 }]);
