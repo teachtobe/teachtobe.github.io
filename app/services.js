@@ -30,6 +30,9 @@ app.factory('userService', function ($rootScope, $http, $q, config) {
  				userService.getRoles(data).then(function(roles){
  					data.roles = roles;
 	 				$rootScope.user=data;
+	 				
+	 				if(roles[0] && roles[0].name=='Facilitator')
+	 					window.location.hash='#/home'
 	 				console.log(roles)
 	 				// $rootScope.user.isAdmin = userService.is('Admin')
 	 				// $rootScope.user.isManager = userService.is('Manager')
