@@ -341,7 +341,7 @@ var RemoteCtrl = app.controller('RemoteCtrl', function($rootScope, $scope, confi
 
 
 
-var TutorialCtrl = app.controller('TutorialCtrl', function($rootScope, $scope, config, resourceService){
+var TutorialCtrl = app.controller('TutorialCtrl', function($rootScope, $scope, $sce, config, resourceService){
 	console.log('TutorialCtrl')
 	$scope.tutorials = [
 		{"name": "ILT Overview", 	"id":"c2fhVsnTtG"},
@@ -362,6 +362,7 @@ var TutorialCtrl = app.controller('TutorialCtrl', function($rootScope, $scope, c
 				}
 			);
 			$scope.current = tutorial;
+			$scope.url = $sce.trustAsResourceUrl('//screencast-o-matic.com/embed?sc='+tutorial.id+'&w=1000&v=3');
 		}
 	}
 

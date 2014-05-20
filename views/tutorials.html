@@ -1,6 +1,6 @@
-<div class="center">
-	<iframe width=853 height=511 frameborder="0" scrolling="no" ng-src="//screencast-o-matic.com/embed?sc={{current.id}}&w=853&v=3"></iframe>
+<div class="center" ng-controller="TutorialCtrl">
+	<iframe width="1000" height="560" frameborder="0" scrolling="no" ng-src="{{url}}"></iframe>
 	<ul class="list-group">
-		<li class="list-group-item" ng-repeat="tutorial in tutorials" ng-click="tools.view(tutorial)">{{tutorial.name}}</li>
+		<li class="list-group-item" ng-repeat="tutorial in tutorials" ng-click="tools.view(tutorial)" style="color:black;">{{tutorial.name}}</li>
 	</ul>
 </div>
