@@ -19,9 +19,14 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $http, $r
 	it.resourceService = resourceService;
 
 	$scope.$on('$viewContentLoaded', function(event) {
-		ga('send', 'pageview', $location.path());
+		// ga('send', 'pageview', $location.path());
+		mixpanel.track(
+			"Clicked Link",
+			{ "Path": $location.path() }
+		);
 	});
 	$rootScope.$on('authenticated', function(event,user) {
+		mixpanel.identify(user.objectId);
 		$rootScope.remote = config.fireRef.child('remote').child(user.objectId);
 		$rootScope.$broadcast('fb-connected', $rootScope.remote);
 		$rootScope.remote.on("value", function(update) {
@@ -66,7 +71,14 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $http, $r
 		},
 		mode:function(mode){
 			if($rootScope.mode==mode){
-				ga('send', 'event', 'mode', 'leave', mode);
+				// ga('send', 'event', 'mode', 'leave', mode);
+				mixpanel.track(
+					"Mode Changed",
+					{ 
+						"From": $rootScope.mode,
+						"To": 	'normal' 
+					}
+				);
 				$rootScope.mode = 'normal';	// v- Assign Mode
 				if(mode=='presentation'){
 					var el = document.documentElement
@@ -77,7 +89,14 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $http, $r
 					rfs.call(el);
 				}
 			}else{
-				ga('send', 'event', 'mode', 'enter', mode);
+				// ga('send', 'event', 'mode', 'enter', mode);
+				mixpanel.track(
+					"Mode Changed",
+					{ 
+						"From": $rootScope.mode,
+						"To": 	mode 
+					}
+				);
 				$rootScope.mode = mode;		// ^- Assign Mode
 			}
 		},
@@ -173,7 +192,14 @@ var AgendaCtrl = app.controller('AgendaCtrl', function($rootScope, $scope, userS
 		music:{
 			playing:false,
 			play:function(musicIndex){
-				ga('send', 'event', 'agenda', 'playMusic', musicIndex);
+				// ga('send', 'event', 'agenda', 'playMusic', musicIndex
+				mixpanel.track(
+					"Agenda Used",
+					{ 
+						"To": 'Play Music',
+						"Song Number": 	musicIndex 
+					}
+				);
 				var item = $scope.data.hymns[musicIndex]
 				if(item.alturl!=undefined){
 					this.playing = new Audio(item.alturl.split('?download=')[0]);
@@ -331,7 +357,13 @@ var AdminCtrl = app.controller('AdminCtrl', function($rootScope, $scope, $http, 
 			editRoles:function(user){
 				$rootScope.temp.user = user;
 				$('#adminUserModal').modal('show');
-				ga('send', 'event', 'admin', 'editRoles');
+				// ga('send', 'event', 'admin', 'editRoles');
+				mixpanel.track(
+					"View Roles",
+					{ 
+						"For": user.name
+					}
+				);
 			}
 		},
 		roles:{

@@ -528,7 +528,14 @@ app.factory('resourceService', function ($rootScope, $q, $timeout, dataService) 
 		},
 		focus:function(resource){
 			$rootScope.temp.resource = resource;
-			ga('send', 'event', 'resource', resource.category, resource.title);
+			// ga('send', 'event', 'resource', resource.category, resource.title);
+			mixpanel.track(
+				"Resource Viewed",
+				{
+					"Category": resource.category,
+					"Title": 	resource.title
+				}
+			);
 			if($rootScope.mode=='edit'){
 				delete $rootScope.temp.resource.topicObj;
 				$('#resourceAddModal').modal('show');
@@ -588,7 +595,14 @@ app.factory('resourceService', function ($rootScope, $q, $timeout, dataService) 
 		send:function(resource){
 			if($rootScope.remote){
 				$rootScope.remote.set({resource:resource.objectId})
-				ga('send', 'event', 'remoteControl', 'resource', resource.title);
+				// ga('send', 'event', 'remoteControl', 'resource', resource.title);
+				mixpanel.track(
+					"Remote Control",
+					{ 
+						"Media": "Resource",
+						"Title": 	resource.title 
+					}
+				);
 			}
 		}
 	}
