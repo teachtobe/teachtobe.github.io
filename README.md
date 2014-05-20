@@ -1,4 +1,4 @@
-LearnNow
+Inspired Learning & Teaching
 =============
 
 

@@ -341,6 +341,37 @@ var RemoteCtrl = app.controller('RemoteCtrl', function($rootScope, $scope, confi
 
 
 
+var TutorialCtrl = app.controller('TutorialCtrl', function($rootScope, $scope, config, resourceService){
+	console.log('TutorialCtrl')
+	$scope.tutorials = [
+		{"name": "ILT Overview", 	"id":"c2fhVsnTtG"},
+		{"name": "ILT Notes", 		"id":"c2fhnDnTtd"},
+		{"name": "ILT Present", 	"id":"c2fheJnTub"},
+		{"name": "ILT Remote", 		"id":"c2fhVunTtg"}
+		// {"name": "ILT Admin", 		"id":"c2fhfUnTuy"},
+		// {"name": "ILT Admin 2", 	"id":"c2fhf9nTug"},
+	]
+	$scope.current = $scope.tutorials[0];
+
+	$scope.tools = {
+		view:function(tutorial){
+			mixpanel.track(
+				"View Tutorial",
+				{ 
+					"Name": tutorial.name
+				}
+			);
+			$scope.current = tutorial;
+		}
+	}
+
+	it.TutorialCtrl=$scope;
+});
+
+
+
+
+
 
 
 
@@ -394,3 +425,5 @@ var AdminCtrl = app.controller('AdminCtrl', function($rootScope, $scope, $http, 
 	$scope.tools = tools;
 	it.AdminCtrl=$scope;
 });
+
+
