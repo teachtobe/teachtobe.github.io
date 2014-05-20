@@ -30,6 +30,16 @@
 		<div class="card">
 			<h2>Tools</h2>
 			<ul class="list">
+				<li title="When registration is open, new accounts will automatically be assigned as facilitators.">
+					<a ng-click="tools.registration.toggle()" ng-show="siteSettings.registration.value=='open'">
+						<span class="title">Registration Is Open</span>
+						<span class="sub">Close Registration</span>
+					</a>
+					<a ng-click="tools.registration.toggle()" ng-show="siteSettings.registration.value=='closed'">
+						<span class="title">Registration Is Closed</span>
+						<span class="sub">Open Registration</span>
+					</a>
+				</li>
 				<li>
 					<a href="https://docs.google.com/spreadsheet/ccc?key=0As79z8Uw8IvadGc4bnNVdzNscmhvZm56SGZRbmdoMnc&usp=drive_web#gid=0" target="_new">
 						<span class="title">View Recomendations</span>

@@ -377,6 +377,13 @@ var TutorialCtrl = app.controller('TutorialCtrl', function($rootScope, $scope, $
 
 
 var AdminCtrl = app.controller('AdminCtrl', function($rootScope, $scope, $http, $q, config, initSetupService, roleService){
+	$http.get(config.parseRoot+'classes/settings').success(function(data){
+		$scope.siteSettings = {};
+		console.log('site settings',data)
+		for(var i=0; i<data.results.length; i++)
+			if(data.results[i].key=='registration')
+				$scope.siteSettings.registration = data.results[i];
+	});
 	var tools = {
 		email:function(fun){
 			$http.post(config.parseRoot+'functions/'+fun, {}).success(function(data){
@@ -412,6 +419,21 @@ var AdminCtrl = app.controller('AdminCtrl', function($rootScope, $scope, $http, 
 				initSetupService.setup($rootScope.user,config.roles).then(function(results){
 					$rootScope.data.roles = results;
 				})
+			}
+		},
+		registration:{
+			toggle:function(){
+				var registration = $scope.siteSettings.registration;
+				if(registration.value == 'open')
+					registration.value = 'closed'
+				else
+					registration.value = 'open'
+
+				$http.put(config.parseRoot+'classes/settings/'+registration.objectId, {"value": registration.value}).success(function(data){
+					console.log(data);
+				}).error(function(error, data){
+					console.error(error,data);
+				});
 			}
 		}
 	}
