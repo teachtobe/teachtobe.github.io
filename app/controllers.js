@@ -40,18 +40,20 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $http, $r
 			// $rootScope.$apply(function(){
 				$rootScope.data.presentation = update.val();
 				var presentation = $rootScope.data.presentation
-				var direction = presentation.direction
-				var resource = presentation.resource
-				if($rootScope.view!='remote'){
-					if(direction)
-						navigateService.navigate(direction)
-					if(resource){
-						var newResource = resourceService.get(resource).then(function(newResource){
-							console.log(newResource)
-							resourceService.focus(newResource)
-						})
-					}else{
-						$('#resourceViewModal').modal('hide');
+				if(presentation){
+					var direction = presentation.direction
+					var resource = presentation.resource
+					if($rootScope.view!='remote'){
+						if(direction)
+							navigateService.navigate(direction)
+						if(resource){
+							var newResource = resourceService.get(resource).then(function(newResource){
+								console.log(newResource)
+								resourceService.focus(newResource)
+							})
+						}else{
+							$('#resourceViewModal').modal('hide');
+						}
 					}
 				}
 			// });
