@@ -22,11 +22,15 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $http, $r
 		// ga('send', 'pageview', $location.path());
 		mixpanel.track(
 			"Clicked Link",
-			{ "Path": $location.path() }
+			{
+				"Path": 	$location.path()
+			}
 		);
 	});
 	$rootScope.$on('authenticated', function(event,user) {
 		mixpanel.identify(user.objectId);
+		mixpanel.people.set({ "Name": user.name });
+		mixpanel.people.set({ "Email": user.email });
 		$rootScope.remote = config.fireRef.child('remote').child(user.objectId);
 		$rootScope.$broadcast('fb-connected', $rootScope.remote);
 		$rootScope.remote.on("value", function(update) {
