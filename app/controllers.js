@@ -29,8 +29,11 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $http, $r
 	});
 	$rootScope.$on('authenticated', function(event,user) {
 		mixpanel.identify(user.objectId);
-		mixpanel.people.set({ "Name": user.name });
-		mixpanel.people.set({ "Email": user.email });
+		mixpanel.people.set({
+			"$name": 	user.name,
+			"$email": 	user.email,
+			"$phone": 	user.phone
+		});
 		$rootScope.remote = config.fireRef.child('remote').child(user.objectId);
 		$rootScope.$broadcast('fb-connected', $rootScope.remote);
 		$rootScope.remote.on("value", function(update) {
