@@ -503,8 +503,8 @@ a, [ng-click]{
 		text-align: center;
 	}
 	#overview .steps li:hover {
-		background: #82A9D4;
-		color: #FFF;
+		/* background: #82A9D4; */
+		/* color: #FFF; */
 	}
 		#overview .steps li:before {
 			width: 35px;
@@ -520,7 +520,7 @@ a, [ng-click]{
 			width: 0px;
 		}
 		#overview .steps li:hover:before {
-			width: 0px;
+			/*width: 0px;*/
 		}
 		#overview .steps li:after {
 			content: "";
@@ -530,10 +530,10 @@ a, [ng-click]{
 			position: absolute;
 			left: 33%;
 			top: 100%;
-			background-image: url('../img/uparrow.png');
+			background-image: url('../img/uparrow-l.png');
 		}
 		#overview .steps li:hover:after {
-			background: #82A9D4;
+			/* background: #82A9D4; */
 		}
 		.steps li span {
 			margin-right: 5px;
@@ -548,14 +548,14 @@ a, [ng-click]{
 		}
 #overview .principles {
 	padding: 20px;
-	background: #326BA9;
+	background: #6499D4;
 	padding-left: 50px;
 	font-size: 22px;
 	color: #000;
 	border-radius: 30px;
 }
 	#overview .steps:hover + .principles {
-		background: #82A9D4;
+		/*background: #82A9D4;*/
 	}
 	#overview .principles li {
 		margin-bottom: 20px;
