@@ -76,7 +76,10 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $http, $r
 			if(url)
 				$rootScope.side[side]=url;
 			else
-				return $rootScope.side[side]
+				if($rootScope.user)
+					return $rootScope.side[side]
+				else
+					return false;
 		},
 		mode:function(mode){
 			if($rootScope.mode==mode){

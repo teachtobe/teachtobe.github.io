@@ -1,7 +1,7 @@
 
 <!-- <h1 id="siteTitle">{{'SITE.TITLE' | translate}}</h1> -->
 <nav>
-	<ul>
+	<ul ng-show="user">
 		<li><a href="#/home" title="" class="title">{{'SITE.TITLE' | translate}}</a></li>
 		<li ng-hide="view=='remote'">
 			<a href="#/topicList">
@@ -16,12 +16,12 @@
 			</a>
 		</li>
 	</ul>
+	<ul ng-hide="user">
+		<li><a ng-click="tools.user.signupModal()">{{'SITE.SIGNUP' | translate}}</a></li>
+		<li><a ng-click="tools.user.loginModal()">{{'SITE.LOGIN' | translate}}</a></li>
+	</ul>
 </nav>
 <div class="account" ng-hide="view=='remote'">
-	<span ng-hide="user">
-		<a ng-click="tools.user.signupModal()">{{'SITE.SIGNUP' | translate}}</a> |
-		<a ng-click="tools.user.loginModal()">{{'SITE.LOGIN' | translate}}</a>
-	</span>
 	<span ng-show="user">
 		<div class="btn-group">
 			<a data-toggle="dropdown">
