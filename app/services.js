@@ -4,14 +4,7 @@ app.factory('Auth', function ($rootScope, $q, $firebaseAuth, $firebaseObject) {
 		if(user){
 			
 			var actRef = firebase.database().ref().child('site/private/accounts').child(user.uid);
-			var actObj = $firebaseObject(actRef);
-			actObj.$loaded().then(function(){
-				it.a=actObj;
-				if(!actObj.$value){
-					actObj.$value = user.toJSON();
-					actObj.$save();
-				}
-			})
+				actRef.set(user.toJSON())
 			
 			var roleRef = firebase.database().ref().child('site/public/roles').child(user.uid);
 			var roleObj = $firebaseObject(roleRef);
