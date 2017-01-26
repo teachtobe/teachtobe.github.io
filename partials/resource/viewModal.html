@@ -1,4 +1,4 @@
-<div class="modal fade" id="resourceViewModal" ng-controller="ResourceCtrl">
+<div class="modal fade" id="resourceViewModal">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -27,7 +27,7 @@
 					<button type="button" class="btn btn-success pull-right" data-dismiss="modal">Close</button>
 				</div>
 
-				<notes show="mode=='study'" category="'resource'" topic="temp.resource.objectId"></notes>
+				<notes show="mode=='study'" category="'resource'" topic="temp.resource.$id"></notes>
 			</div>
 		</div>
 	</div>

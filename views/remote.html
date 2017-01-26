@@ -1,4 +1,4 @@
-<div ng-controller="RemoteCtrl">
+<div>
 	<h1>{{data.presentation.location}}</h1>
 	<div class="cards">
 		<div class="card">
@@ -17,7 +17,7 @@
 			<h1>Principles</h1>
 			<ul class="list">
 				<li ng-repeat="principle in data.topics">
-					<a ng-click="tools.control('topic/'+principle.objectId)">{{principle.title}}</a>
+					<a ng-click="tools.control('topic/'+principle.$id)">{{principle.title}}</a>
 				</li>
 			</ul>
 		</div>

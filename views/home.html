@@ -10,7 +10,7 @@
 	<div class="card">
 		<h2>Principles</h2>
 		<ul class="list">
-			<li ng-repeat="topic in data.topics"><a href="#/topic/{{topic.objectId}}">{{topic.title}}</a></li>
+			<li ng-repeat="topic in data.topics"><a ng-click="tools.topic.focus(topic)">{{topic.title}}</a></li>
 		</ul>
 	</div>
 	<div class="card">

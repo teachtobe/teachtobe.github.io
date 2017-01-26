@@ -2,73 +2,73 @@
 <!-- <h1 id="siteTitle">{{'SITE.TITLE' | translate}}</h1> -->
 <nav>
 	<ul ng-show="user">
-		<li><a href="#/home" title="" class="title">{{'SITE.TITLE' | translate}}</a></li>
+		<li><a href="#/home" title="" class="title">Inspired Learning & Teaching</a></li>
 		<li ng-hide="view=='remote'">
 			<a href="#/topicList">
 				<i class="fa fa-list-ol"></i>
-				<span>{{'SITE.NAV.TOPIC' | translate}}</span>
+				<span>Principles</span>
 			</a>
 		</li>
 		<li ng-hide="view=='remote'">
 			<a href="#/resourceList">
 				<i class="fa fa-list-ul"></i>
-				<span>{{'SITE.NAV.RESOURCE' | translate}}</span>
+				<span>Resources</span>
 			</a>
 		</li>
 	</ul>
 	<ul ng-hide="user">
-		<li><a ng-click="tools.user.signupModal()">{{'SITE.SIGNUP' | translate}}</a></li>
-		<li><a ng-click="tools.user.loginModal()">{{'SITE.LOGIN' | translate}}</a></li>
+		<li><a ng-click="tools.user.login()">Signup</a></li>
+		<li><a ng-click="tools.user.login()">Login</a></li>
 	</ul>
 </nav>
 <div class="account" ng-hide="view=='remote'">
 	<span ng-show="user">
 		<div class="btn-group">
 			<a data-toggle="dropdown">
-				{{user.name}} <span class="caret"></span>
+				{{user.displayName}} <span class="caret"></span>
 			</a>
 			<ul class="dropdown-menu" role="menu">
 				<li>
 					<a href="#/remote" title="Open Remote">
 						<i class="fa fa-magnet"></i>
-						<span>{{'SITE.NAV.REMOTE' | translate}}</span>
+						<span>Remote</span>
 					</a>
 				</li>
 				<li>
 					<a class="present" ng-click="tools.mode('present')" title="Begin Presentation (F11)">
 						<i class="fa fa-desktop"></i>
-						<span>{{'SITE.NAV.PRESENT' | translate}}</span>
+						<span>Present</span>
 					</a>
 				</li>
-				<li>
-					<a ng-click="tools.mode('study')" title="Switch to study mode.">
-						<i class="fa fa-book"></i>
-						<span>{{'SITE.NAV.STUDY' | translate}}</span>
-					</a>
-				</li>
+				<!--<li>-->
+				<!--	<a ng-click="tools.mode('study')" title="Switch to study mode.">-->
+				<!--		<i class="fa fa-book"></i>-->
+				<!--		<span>Study</span>-->
+				<!--	</a>-->
+				<!--</li>-->
 				<li ng-show="tools.canEdit()">
 					<a ng-click="tools.mode('edit')" title="Switch to editing mode.">
 						<i class="fa fa-edit"></i>
-						<span>{{'SITE.NAV.EDIT' | translate}}</span>
+						<span>Edit</span>
 					</a>
 				</li>
 				<li class="divider"></li>
 				<li ng-show="tools.canEdit()">
 					<a ng-href="#/admin" title="Visit the Admin Console">
 						<i class="fa fa-users"></i>
-						<span>{{'SITE.NAV.ADMIN' | translate}}</span>
+						<span>Admin</span>
 					</a>
 				</li>
 				<li>
-					<a href="#/tutorials" title="Learn how to use this site.">
+					<a ng-href="#/help" title="Learn More">
 						<i class="fa fa-question-circle"></i>
-						<span>{{'SITE.NAV.HELP' | translate}}</span>
+						<span>Help</span>
 					</a>
 				</li>
 				<li>
 					<a title="Logout" ng-click="tools.user.logout()">
 						<i class="fa fa-sign-out"></i>
-						<span>{{'SITE.LOGOUT' | translate}}</span>
+						<span>Logout</span>
 					</a>
 				</li>
 			</ul>

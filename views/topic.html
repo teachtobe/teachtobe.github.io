@@ -1,6 +1,6 @@
-<div class="titlentext" ng-controller="TopicCtrl" ng-init="tools.setTopic()">
+<div class="titlentext" ng-init="tools.topic.init()" ng-show="topic">
 	<div ng-hide="mode=='edit'">
-		<h2>{{'SITE.TOPIC.LEARNERS_AND_TEACHERS' | translate}}</h2>
+		<h2>Learners & Teachers at BYU-Idaho:</h2>
 		<h1 ng-hide="topic.tagline">{{topic.i}}. {{topic.title}}</h1>
 		<h1 ng-show="topic.tagline">{{topic.i}}. {{topic.tagline}}</h1>
 		<div class="well">
@@ -9,7 +9,7 @@
 	</div>
 	<notes show="mode=='study'" category="view" topic="id"></notes>
 	<div ng-show="mode=='edit'">
-		<form role="form" ng-submit="tools.topic.update('topic',topic)" ng-show="mode=='edit'">
+		<form role="form" ng-submit="tools.topic.update(topic)" ng-show="mode=='edit'">
 			<div class="form-group col-md-3">
 				<input type="text" class="form-control" id="topicTitle" 
 					placeholder="Topic Title" ng-model="topic.title">

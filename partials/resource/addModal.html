@@ -1,4 +1,4 @@
-<div class="modal fade" id="resourceAddModal" ng-controller="ResourceCtrl">
+<div class="modal fade" id="resourceAddModal">
 	<div class="modal-dialog">
 		<form class="form-horizontal" ng-submit="tools.resource.save(temp.resource)">
 			<div class="modal-content">
@@ -74,7 +74,7 @@
 						<label for="resourceTopic" class="col-lg-3 control-label">Principles</label>
 						<div class="col-lg-9">
 							<select class="form-control" ng-model="temp.resource.topics" multiple>
-								<option value="{{topic.objectId}}" ng-repeat="topic in data.topics">{{topic.title}}</option>
+								<option value="{{topic.$id}}" ng-repeat="topic in data.topics">{{topic.title}}</option>
 							</select>
 						</div>
 					</div>

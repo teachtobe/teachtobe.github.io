@@ -1,4 +1,4 @@
-<div class="content topics" ng-controller="TopicCtrl">
+<div class="content topics">
 	<h1>
 		<a href="#/topicList" title="Go to all principles">
 			<span>{{data.topics.length}} Principles</span> 
@@ -6,9 +6,9 @@
 	</h1>
 	<ul>
 		<li ng-repeat="topic in data.topics">
-			<a href="#/topic/{{topic.objectId}}" title="Go to {{topic.title}}">
+			<a href="#/topic/{{topic.$id}}" title="Go to {{topic.title}}">
 				<span>{{topic.title}}</span> 
-				<i class="fa fa-trash-o" ng-click="tools.topic.remove('topic',topic)" ng-show="mode=='edit'"></i>
+				<i class="fa fa-trash-o" ng-click="tools.topic.remove(topic)" ng-show="mode=='edit'"></i>
 			</a>
 		</li>
 		<li>
@@ -22,7 +22,7 @@
 			</a>
 		</li>
 	</ul>
-	<form role="form" ng-submit="tools.topic.add('topic',temp.topic)" ng-show="mode=='edit'">
+	<form role="form" ng-submit="tools.topic.add(temp.topic)" ng-show="mode=='edit'">
 		<div class="form-group">
 			<input type="text" class="form-control" id="topicTitle" 
 				placeholder="Topic Title" ng-model="temp.topic.title">

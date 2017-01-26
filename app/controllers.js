@@ -1,4 +1,5 @@
-var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $http, $routeParams, $location, $window, config, userService, resourceService, navigateService){
+var MainCtrl = app.controller('MainCtrl', function($rootScope, $http, $routeParams, $location, $timeout, $q, $window, $firebaseArray, config, Auth, navigateService){
+	
 	$rootScope.view = $routeParams.view;
 	$rootScope.id = $routeParams.id;
 	if(!$rootScope.data){
@@ -8,65 +9,115 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $http, $r
 		$rootScope.data={
 			topics:[],
 			resources:[],
-			organized: {},
+			organized:{},
 			categories:['Scripture','Quote','Video'],
 			clickPath: ['welcome','agenda','introduction','topicList','topic','resourceList','overview','recomendation','review']
 		};
-		$http({method: 'GET', url: 'assets/json/hymns.json'}).success(function(data) {
-			$rootScope.data.hymns=data.playlist.list;
+		$http.get('assets/json/hymns.json').then(function(data) {
+			if(data && data.playlist)
+				$rootScope.data.hymns=data.playlist.list;
 		});
 	}
-	it.resourceService = resourceService;
+	
+	
+	var topicRef = firebase.database().ref().child("lesson/ilt/topics");
+	var topics = $rootScope.data.topics = $firebaseArray(topicRef);
+	
+	var resourceRef = firebase.database().ref().child("lesson/ilt/resources");
+	var resources = $rootScope.data.resources = $firebaseArray(resourceRef);
+	resources.$loaded(function(r){
+		tools.resource.list(r)
+	})
 
-	$scope.$on('$viewContentLoaded', function(event) {
-		// ga('send', 'pageview', $location.path());
-		mixpanel.track(
-			"Clicked Link",
-			{
-				"Path": 	$location.path()
-			}
-		);
-	});
-	$rootScope.$on('authenticated', function(event,user) {
-		mixpanel.identify(user.objectId);
-		mixpanel.people.set({
-			"$name": 	user.name,
-			"$email": 	user.email,
-			"$phone": 	user.phone
-		});
-		$rootScope.remote = config.fireRef.child('remote').child(user.objectId);
-		$rootScope.$broadcast('fb-connected', $rootScope.remote);
-		$rootScope.remote.on("value", function(update) {
-			// $rootScope.$apply(function(){
-				$rootScope.data.presentation = update.val();
-				var presentation = $rootScope.data.presentation
-				if(presentation){
-					var direction = presentation.direction
-					var resource = presentation.resource
-					if($rootScope.view!='remote'){
-						if(direction)
-							navigateService.navigate(direction)
-						if(resource){
-							var newResource = resourceService.get(resource).then(function(newResource){
-								console.log(newResource)
-								resourceService.focus(newResource)
-							})
-						}else{
-							$('#resourceViewModal').modal('hide');
-						}
-					}
-				}
-			// });
-		});
-	});
 
 	var tools = {
-		user: userService,
 		navigate: navigateService,
-		url:function(){
-			if($scope.user)
+		user: Auth,
+		resource: {
+			list: function(resources){
+				var organized = {};
+				$rootScope.data.categories.forEach(function(c){
+					organized[c] = {
+						title:		c,
+						resources:	[]
+					}
+				})
+				resources.forEach(function(r){
+					organized[r.category].resources.push(r);
+				})
+				$rootScope.data.organized = organized;
+			},
+			paint: function(resource){
+				if(resource.topics && resource.topics.indexOf($rootScope.id) != -1)
+					return 'active';
+			},
+			focus: function(resource){
+				$rootScope.temp.resource = resource;
+				if($rootScope.mode=='edit'){
+					delete $rootScope.temp.resource.topicObj;
+					$('#resourceAddModal').modal('show');
+				}else{
+					$('#resourceViewModal').on('hidden.bs.modal', function () {
+						$('#videoPlayer').html('');
+					}).modal('show');
+					if(resource.category=='Video')
+						$('#videoPlayer').html('<iframe width="560" height="315" src="'+resource.refrence+'" frameborder="0"></iframe>')
+					else if(resource.category=='Quote'){
+						$($($('.autofit')[0]).children('h2')[0]).css('color', '#FFF');
+						$timeout(function(){
+							autofit($('.autofit')[0])
+						}, 500);
+					}
+				}
+			},
+			save: function(resource){
+				var id = resource.$id;
+				resource = angular.copy(resource)
+				console.log(resource.$id)
+				delete resource.$id;
+				delete resource.$priority;
+				$rootScope.data.resources.$ref().child(id).set(resource).then(function(r){
+					$('#resourceAddModal').modal('hide');
+				}).catch(function(e){
+					alert(e)
+				})
+			}
+		},
+		topic: {
+			init: function(){
+				console.log($routeParams.id)
+				$rootScope.data.topics.$loaded(function(){
+					$rootScope.topic = $rootScope.data.topics.$getRecord($routeParams.id);
+				})
+			},
+			get: function(topic){
+				console.log(topic)
+				return $rootScope.data.topics.$getRecord(topic);
+			}
+		},
+		admin: {
+			init: function(){
+				var actRef = firebase.database().ref().child("site/private/accounts");
+				$rootScope.users = $firebaseArray(actRef);
+			},
+			focus: function(user){
+				$rootScope.temp.user = user;
+				var roleRef = firebase.database().ref().child('site/public/roles').child(user.uid);
+				$rootScope.temp.roles = $firebaseArray(roleRef);
+			},
+			roleAdd: function(user){
+				var role = prompt('Enter role to assign.')
+				$rootScope.temp.roles.$ref().child(role).set(true);
+			},
+			roleRemove: function(user, role){
+				if(confirm('Are you sure you want to remove this user from this role?'))
+				$rootScope.temp.roles.$remove(role)
+			}
+		},
+		url: function(){
+			if($rootScope.user)
 				if(tools.canView())
-					return 'views/'+$routeParams.view+'.html';
+					return 'views/'+$rootScope.view+'.html';
 				else
 					return 'views/newMember.html';
 			else
@@ -83,15 +134,7 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $http, $r
 		},
 		mode:function(mode){
 			if($rootScope.mode==mode){
-				// ga('send', 'event', 'mode', 'leave', mode);
-				mixpanel.track(
-					"Mode Changed",
-					{ 
-						"From": $rootScope.mode,
-						"To": 	'normal' 
-					}
-				);
-				$rootScope.mode = 'normal';	// v- Assign Mode
+				$rootScope.mode = 'normal';
 				if(mode=='presentation'){
 					var el = document.documentElement
 					, rfs =
@@ -101,15 +144,7 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $http, $r
 					rfs.call(el);
 				}
 			}else{
-				// ga('send', 'event', 'mode', 'enter', mode);
-				mixpanel.track(
-					"Mode Changed",
-					{ 
-						"From": $rootScope.mode,
-						"To": 	mode 
-					}
-				);
-				$rootScope.mode = mode;		// ^- Assign Mode
+				$rootScope.mode = mode;
 			}
 		},
 		setup:function(){
@@ -162,28 +197,28 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $http, $r
 			}
 		},
 		canView: function(){
-			return (
-				userService.is('Admin') 
-				|| userService.is('Manager') 
-				|| userService.is('Director') 
-				|| userService.is('Coordinator')
-				|| userService.is('Facilitator')
-			)
+			if($rootScope.user)
+				return (
+					$rootScope.user.is('admin') 
+					|| $rootScope.user.is('manager') 
+					|| $rootScope.user.is('director') 
+					|| $rootScope.user.is('coordinator')
+					|| $rootScope.user.is('facilitator')
+				)
 		},
 		canEdit: function(){
-			return (
-				userService.is('Admin') 
-				|| userService.is('Manager') 
-				|| userService.is('Director') 
-				|| userService.is('Coordinator')
-			)
+			if($rootScope.user)
+				return (
+					$rootScope.user.is('admin') 
+					|| $rootScope.user.is('manager') 
+					|| $rootScope.user.is('director') 
+					|| $rootScope.user.is('coordinator')
+				)
 		}
 	}
-	$scope.tools = tools;
-
-	userService.init();
+	$rootScope.tools = tools;
 	tools.setup();
-	it.MainCtrl=$scope;
+	it.MainCtrl=$rootScope;
 });
 
 
@@ -199,19 +234,11 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $http, $r
 
 
 
-var AgendaCtrl = app.controller('AgendaCtrl', function($rootScope, $scope, userService, dataService){
+var AgendaCtrl = app.controller('AgendaCtrl', function($rootScope, $scope){
 	$scope.tools = {
 		music:{
 			playing:false,
 			play:function(musicIndex){
-				// ga('send', 'event', 'agenda', 'playMusic', musicIndex
-				mixpanel.track(
-					"Agenda Used",
-					{ 
-						"To": 'Play Music',
-						"Song Number": 	musicIndex 
-					}
-				);
 				var item = $scope.data.hymns[musicIndex]
 				if(item.alturl!=undefined){
 					this.playing = new Audio(item.alturl.split('?download=')[0]);
@@ -226,230 +253,3 @@ var AgendaCtrl = app.controller('AgendaCtrl', function($rootScope, $scope, userS
 
 	it.AgendaCtrl=$scope;
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-var TopicCtrl = app.controller('TopicCtrl', function($rootScope, $scope, userService, dataService, resourceService){
-	$scope.$on('authenticated', function(data) {
-		dataService.list('topic').then(function(topics){
-			$scope.data.topics = topics;
-		})
-	});
-
-	$scope.tools = {
-		user: userService,
-		topic: dataService,
-		getTopic:function(objectId){
-			for(var i=0; i<$scope.data.topics.length; i++)
-				if($scope.data.topics[i].objectId==objectId)
-					return $scope.data.topics[i];
-		},
-		setTopic: function(){
-			dataService.list('topic').then(function(topics){
-				$scope.topic = dataService.get('topic', $scope.id)
-			});
-		},
-		listResources: function(topic, category){
-			var resources = [];
-			if(topic.resources)
-				for(var i=0; i<topic.resources.length; i++)
-					if(topic.resources[i].category==category)
-						resources.push(topic.resources[i])
-			return resources;
-		}
-	}
-
-	$rootScope.$on("update-topic", function(event,newList){
-		$scope.data.topics = newList;
-		$scope.temp.topic = {};
-	});
-
-	it.TopicCtrl=$scope;
-});
-
-
-
-
-
-
-
-
-
-var ResourceCtrl = app.controller('ResourceCtrl', function($rootScope, $scope, userService, dataService, resourceService){
-	$scope.$on('authenticated', function() {
-		dataService.list('topic').then(function(topics){
-			$scope.data.topics = topics;
-			dataService.list('resource').then(function(resources){
-				$scope.data.resources = resources;
-				$scope.tools.resource.organize();
-			})
-		})
-	});
-
-	$scope.tools = {
-		user: userService,
-		resource: resourceService,
-		setResource: function(){
-			dataService.list('resource').then(function(resources){
-				$scope.resource = dataService.get('resource', $scope.id)
-			});
-		}
-	}
-
-	$rootScope.$on("update-resource", function(event,newList){
-		$scope.data.resources = newList;
-		$scope.tools.resource.organize();
-		$scope.temp.resource = {};
-		$('#resourceAddModal').modal('hide');
-	});
-
-	it.ResourceCtrl=$scope;
-});
-
-
-
-
-
-
-var RemoteCtrl = app.controller('RemoteCtrl', function($rootScope, $scope, config, resourceService){
-	console.log('RemoteCtrl')
-
-	$scope.tools = {
-		control:function(direction){
-			if($rootScope.remote)
-				$rootScope.remote.set({direction:direction})
-		},
-		preview:function(resource){
-			resourceService.focus(resource)
-		}
-	}
-
-	it.RemoteCtrl=$scope;
-});
-
-
-
-
-
-
-
-
-var TutorialCtrl = app.controller('TutorialCtrl', function($rootScope, $scope, $sce, config, resourceService){
-	console.log('TutorialCtrl')
-	$scope.tutorials = [
-		{"name": "ILT Overview", 	"id":"c2fhVsnTtG"},
-		{"name": "ILT Notes", 		"id":"c2fhnDnTtd"},
-		{"name": "ILT Present", 	"id":"c2fheJnTub"},
-		{"name": "ILT Remote", 		"id":"c2fhVunTtg"}
-		// {"name": "ILT Admin", 		"id":"c2fhfUnTuy"},
-		// {"name": "ILT Admin 2", 	"id":"c2fhf9nTug"},
-	]
-	$scope.current = $scope.tutorials[0];
-
-	$scope.tools = {
-		view:function(tutorial){
-			mixpanel.track(
-				"View Tutorial",
-				{ 
-					"Name": tutorial.name
-				}
-			);
-			$scope.current = tutorial;
-			$scope.url = $sce.trustAsResourceUrl('//screencast-o-matic.com/embed?sc='+tutorial.id+'&w=1000&v=3');
-		}
-	}
-
-	it.TutorialCtrl=$scope;
-});
-
-
-
-
-
-
-
-
-var AdminCtrl = app.controller('AdminCtrl', function($rootScope, $scope, $http, $q, config, initSetupService, roleService){
-	$http.get(config.parseRoot+'classes/settings').success(function(data){
-		$scope.siteSettings = {};
-		console.log('site settings',data)
-		for(var i=0; i<data.results.length; i++)
-			if(data.results[i].key=='registration')
-				$scope.siteSettings.registration = data.results[i];
-	});
-	var tools = {
-		email:function(fun){
-			$http.post(config.parseRoot+'functions/'+fun, {}).success(function(data){
-				$scope.response = data;
-			}).error(function(error, data){
-				$scope.response = {error:error,data:data};
-			});
-		},
-		setup:function(){
-			roleService.detailedRoles().then(function(roles){
-				$rootScope.data.roles = roles;
-				roleService.unassigned().then(function(unassigned){
-					$rootScope.data.unassigned = unassigned;
-				})
-			})
-		},
-		userRoles:roleService,
-		user:{
-			editRoles:function(user){
-				$rootScope.temp.user = user;
-				$('#adminUserModal').modal('show');
-				// ga('send', 'event', 'admin', 'editRoles');
-				mixpanel.track(
-					"View Roles",
-					{ 
-						"For": user.name
-					}
-				);
-			}
-		},
-		roles:{
-			setup:function(){	//This is a one time only thing - used to initiate the website roles.
-				initSetupService.setup($rootScope.user,config.roles).then(function(results){
-					$rootScope.data.roles = results;
-				})
-			}
-		},
-		registration:{
-			toggle:function(){
-				var registration = $scope.siteSettings.registration;
-				if(registration.value == 'open')
-					registration.value = 'closed'
-				else
-					registration.value = 'open'
-
-				$http.put(config.parseRoot+'classes/settings/'+registration.objectId, {"value": registration.value}).success(function(data){
-					console.log(data);
-				}).error(function(error, data){
-					console.error(error,data);
-				});
-			}
-		}
-	}
-
-	tools.setup();
-	$scope.$on('authenticated', function() {
-		tools.setup();
-	})
-	$rootScope.$on('role-reassigned', function(event,unassigned){
-		$rootScope.data.unassigned = unassigned;
-	})
-	$scope.tools = tools;
-	it.AdminCtrl=$scope;
-});
-
-

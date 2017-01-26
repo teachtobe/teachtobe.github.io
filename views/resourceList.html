@@ -1,10 +1,10 @@
-<div id="resourceList" class="cards" ng-controller="ResourceCtrl">
-	<div class="card" ng-repeat="category in data.categories">
-		<h2>{{category}}s</h2>
+<div id="resourceList" class="cards">
+	<div class="card" ng-repeat="category in data.organized">
+		<h2>{{category.title}}s</h2>
 		<ul class="list">
-			<li ng-repeat="resource in data.organized[category]">
+			<li ng-repeat="resource in category.resources">
 				<span class="topics">
-					<i class="fa fa-circle" ng-repeat="topic in resource.topicObj" title="{{topic.title}}" style="color:{{topic.color}};"></i>
+					<i class="fa fa-circle" ng-repeat="topic in resource.topics" title="{{tools.topic.get(topic).title}}" style="color:{{tools.topic.get(topic).color}};"></i>
 				</span>
 				<span class="resource" title="{{resource.refrence}}" ng-click="tools.resource.focus(resource)">{{resource.title}}</span>
 				<i class="fa fa-trash-o" ng-click="tools.resource.remove(resource)" ng-show="mode=='edit'"></i>
