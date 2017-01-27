@@ -1,4 +1,4 @@
-var MainCtrl = app.controller('MainCtrl', function($rootScope, $http, $routeParams, $location, $timeout, $q, $window, $firebaseArray, config, Auth, navigateService){
+var MainCtrl = app.controller('MainCtrl', function($rootScope, $http, $routeParams, $location, $timeout, $q, $window, $firebaseArray, $firebaseObject, config, Auth, navigateService){
 	
 	$rootScope.view = $routeParams.view;
 	$rootScope.id = $routeParams.id;
@@ -19,6 +19,35 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $http, $routePara
 		});
 	}
 	
+	Auth().then(function(user){
+		var presentRef = firebase.database().ref().child("presentation").child(user.uid);
+		var presentation = $rootScope.presentation = $firebaseObject(presentRef);
+		presentation.$loaded(function(){
+			if(window.location.hash!= '#/remote'){
+				presentation.slide = window.location.hash.split('#/')[1];
+				// presentation.history = presentation.history || [];
+				// presentation.history.push({
+				// 	date: new Date().toISOString(),
+				// 	slide: presentation.slide
+				// })
+				presentation.$save();
+			}
+			presentation.$watch(function(r){
+				if($routeParams.view != 'remote'){
+					var part = presentation.slide.split('/');
+					if(part[0] == 'resource'){
+						var resourceId = presentation.slide.split('/')[1];
+						tools.resource.focus(tools.resource.get(resourceId));
+					}else if(part[0] == 'action'){
+						if(part[1] == 'close')
+							$('#resourceViewModal').modal('hide');
+					}else{
+						window.location = '#/'+presentation.slide
+					}
+				}
+			})
+		})
+	})
 	
 	var topicRef = firebase.database().ref().child("lesson/ilt/topics");
 	var topics = $rootScope.data.topics = $firebaseArray(topicRef);
@@ -34,6 +63,9 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $http, $routePara
 		navigate: navigateService,
 		user: Auth,
 		resource: {
+			get: function(resourceId){
+				return $rootScope.data.resources.$getRecord(resourceId);
+			},
 			list: function(resources){
 				var organized = {};
 				$rootScope.data.categories.forEach(function(c){
@@ -73,7 +105,6 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $http, $routePara
 			save: function(resource){
 				var id = resource.$id;
 				resource = angular.copy(resource)
-				console.log(resource.$id)
 				delete resource.$id;
 				delete resource.$priority;
 				$rootScope.data.resources.$ref().child(id).set(resource).then(function(r){
@@ -85,13 +116,11 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $http, $routePara
 		},
 		topic: {
 			init: function(){
-				console.log($routeParams.id)
 				$rootScope.data.topics.$loaded(function(){
 					$rootScope.topic = $rootScope.data.topics.$getRecord($routeParams.id);
 				})
 			},
 			get: function(topic){
-				console.log(topic)
 				return $rootScope.data.topics.$getRecord(topic);
 			}
 		},
@@ -112,6 +141,12 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $http, $routePara
 			roleRemove: function(user, role){
 				if(confirm('Are you sure you want to remove this user from this role?'))
 				$rootScope.temp.roles.$remove(role)
+			}
+		},
+		remote: {
+			control: function(action){
+				$rootScope.presentation.slide = action;
+				$rootScope.presentation.$save();
 			}
 		},
 		url: function(){
@@ -234,12 +269,15 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $http, $routePara
 
 
 
-var AgendaCtrl = app.controller('AgendaCtrl', function($rootScope, $scope){
+var AgendaCtrl = app.controller('AgendaCtrl', function($rootScope, $scope, $http){
+	$http.get('/assets/json/hymns.json').then(function(response){
+		$scope.hymns = response.data.playlist.list;
+	})
 	$scope.tools = {
 		music:{
 			playing:false,
 			play:function(musicIndex){
-				var item = $scope.data.hymns[musicIndex]
+				var item = $scope.hymns[musicIndex]
 				if(item.alturl!=undefined){
 					this.playing = new Audio(item.alturl.split('?download=')[0]);
 					this.playing.play();

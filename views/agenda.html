@@ -13,15 +13,15 @@
 					<label class="col-sm-4 control-label">Hymns</label>
 					<div class="col-sm-8">
 						<select id="openingSong" class="form-control" ng-model="temp.presentation.song">
-							<option ng-repeat="song in data.hymns | filter:temp.songFilter" 
+							<option ng-repeat="song in hymns | filter:temp.songFilter" 
 								value="{{song.detailColumn-1}}">{{song.songNumber}} : {{song.name}}</option>
 						</select>
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-4 col-sm-8">
-						<a class="btn btn-block" ng-show="!tools.music.playing || tools.music.playing.paused" ng-click="tools.music.play(temp.presentation.song)">Play Hymn</a>
-						<a class="btn btn-block" ng-show="tools.music.playing && !tools.music.playing.paused" ng-click="tools.music.pause()">Stop Hymn</a>
+						<a class="btn btn-primary btn-block" ng-show="!tools.music.playing || tools.music.playing.paused" ng-click="tools.music.play(temp.presentation.song)">Play Hymn</a>
+						<a class="btn btn-primary btn-block" ng-show="tools.music.playing && !tools.music.playing.paused" ng-click="tools.music.pause()">Stop Hymn</a>
 					</div>
 				</div>
 				<div class="form-group">

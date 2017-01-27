@@ -17,13 +17,13 @@
 			<div class="modal-body" id="videoPlayer" ng-show="temp.resource.category=='Video'">
 				
 			</div>
-
 			<div class="modal-footer">
-				<div>
+				<div ng-hide="view=='remote'">
 					<p class="pull-right">~{{temp.resource.refrence}}</p>
 				</div>
 				<div ng-show="view=='remote'">
-					<button type="button" class="btn btn-info" ng-click="tools.resource.send(temp.resource)">Send To Projector</button>
+					<button type="button" class="btn btn-info pull-left" ng-click="tools.remote.control('resource/'+temp.resource.$id)">Send To Projector</button>
+					<span style="padding:5px;">~{{temp.resource.refrence}}</span>
 					<button type="button" class="btn btn-success pull-right" data-dismiss="modal">Close</button>
 				</div>
 
