@@ -47,15 +47,15 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $http, $routePara
 				}
 			})
 		})
-	})
-	
-	var topicRef = firebase.database().ref().child("lesson/ilt/topics");
-	var topics = $rootScope.data.topics = $firebaseArray(topicRef);
-	
-	var resourceRef = firebase.database().ref().child("lesson/ilt/resources");
-	var resources = $rootScope.data.resources = $firebaseArray(resourceRef);
-	resources.$loaded(function(r){
-		tools.resource.list(r)
+		
+		var topicRef = firebase.database().ref().child("lesson/ilt/topics");
+		var topics = $rootScope.data.topics = $firebaseArray(topicRef);
+		
+		var resourceRef = firebase.database().ref().child("lesson/ilt/resources");
+		var resources = $rootScope.data.resources = $firebaseArray(resourceRef);
+		resources.$loaded(function(r){
+			tools.resource.list(r)
+		})
 	})
 
 
