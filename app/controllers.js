@@ -25,11 +25,11 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $http, $routePara
 		presentation.$loaded(function(){
 			if(window.location.hash!= '#/remote'){
 				presentation.slide = window.location.hash.split('#/')[1];
-				// presentation.history = presentation.history || [];
-				// presentation.history.push({
-				// 	date: new Date().toISOString(),
-				// 	slide: presentation.slide
-				// })
+				presentation.history = presentation.history || [];
+				presentation.history.push({
+					date: new Date().toISOString(),
+					slide: presentation.slide
+				})
 				presentation.$save();
 			}
 			presentation.$watch(function(r){
