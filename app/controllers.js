@@ -116,11 +116,10 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $http, $routePara
 		},
 		topic: {
 			init: function(){
-				Auth().then(function(user){
+				if($rootScope.data && $rootScope.data.topics && $rootScope.data.topics.$loaded)
 					$rootScope.data.topics.$loaded(function(){
 						$rootScope.topic = $rootScope.data.topics.$getRecord($routeParams.id);
 					})
-				})
 			},
 			get: function(topic){
 				return $rootScope.data.topics.$getRecord(topic);
